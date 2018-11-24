@@ -1,0 +1,157 @@
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote,pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td{background: transparent;border: 2;margin: 0;padding: 0;vertical-align: baseline}
+a{text-decoration:none;color: inherit; font-weight: bold;}
+.oc{display:none}
+
+body{
+  background-image: url("images/patronfloralnegro.jpg");
+  background-size: cover;
+  background-attachment: fixed;
+  color: lightgrey;
+  font-family:cursive;
+}
+
+main{
+  width: 90%;
+  margin: auto;
+}
+
+header{
+  text-align: center;
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+
+img {
+  display: block;
+  border-radius: 10px 10px 10px 10px;
+  border-style: solid;
+  border-color: black;
+}
+
+.seleccionado {
+  background-color: rgba(20, 89, 22, 0.5);
+  box-shadow: 1px 1px 7px green, -1px -1px 7px green;
+}
+
+article{
+  float: left;
+  margin-left:5em;
+  margin-bottom: 5em;
+  background-color: rgba(87, 87, 87, 0.5);
+  padding: 1em;
+  border-radius: 20px 20px 20px 20px;
+  box-shadow: 1px 1px 5px lightgrey, -1px -1px 4px lightgrey;
+}
+
+input{
+  margin-top: 1em;
+}
+
+select{
+  margin-top: 1em;
+}
+
+.pedido label{
+  display: block;
+}
+
+section button{
+  display: block;
+}
+
+section{
+  clear: both;
+}
+
+.pedido{
+  width: 40%;
+}
+
+#datosCliente label{
+  display: inline-block;
+  width: 8em;
+  margin-left: 1em;
+}
+
+#datosCliente input{
+  display: inline;
+  width: 15em;
+  margin-right: 5em;
+}
+
+button{
+  margin-top: 1em;
+  margin-left: 1.2em;
+}
+
+form{
+  max-width: 27em;
+}
+
+textarea{
+  background-color: rgba(117, 117, 111, 0);
+  border-style: none;
+  color: white;
+  margin:1em;
+}
+
+input#codigoPostal{
+  width: 5em;
+}
+
+fieldset{
+  border: 2px solid rgba(211, 211, 211, 0.7);
+  border-radius: 15px;
+}
+
+fieldset p{
+  font-size: 0.7em;
+  text-align:left;
+  margin-right: 2em;
+}
+legend{
+  margin-left: 1em;
+}
+
+footer{
+  clear: both;
+}
+
+header h1{
+  box-shadow: 4px 4px 10px rgba(113, 110,110, 0.6);
+  font-size: 4.4em;
+  color: black;
+  text-shadow: 1px 1px 5px white, -1px -1px 4px white;
+/*  box-shadow: 3px 4px 10px rgba(23, 70,80, 0.6);*/
+}
+
+caption {
+  text-align: left;
+  font-weight:bold;
+  text-decoration: underline;
+}
+
+table{
+  margin: 0em 1em 1em 1em;
+}
+
+/* Este selector es para que solo el los td que sean primeros hijos tengan margen a la dercha.
+Así las segundas columnas de la tabla no tienen este margen extra */
+td:first-child{
+  padding-right: 2em;
+}
+
+.infoError{
+  display: none;
+  color: red;
+  text-shadow: 1px 1px 1px darkred;
+  margin-left: 1em;
+}
+
+footer{
+  text-align: center;
+  margin-bottom: 2em;
+  margin-right: 3em;
+  color: black;
+  text-shadow: 1px 1px 5px white, -1px -1px 4px white;
+}

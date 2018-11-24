@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <title>Merchandising</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+  <link rel="stylesheet" type="text/css" href="estilos.css"/>
+  <script src="merchandising.js"></script>
+  <script type="text/javascript">
+  var resultadoCaptcha=0;
+  function comprobarCapchaInline(elemento, resultado, elementoError){
+    if(comprobarCaptcha(elemento.value, resultado)){
+      elementoError.style.display="none";
+    }
+    else {
+      elementoError.style.display="block";
+    }
+  }
+
+  function comprobarTelefonoInline(elemento,elementoError){
+    var telefono=elemento.value;
+    if(!comprobarTelefono(telefono)){
+      elementoError.style.display="block";
+    }
+    else {
+      elementoError.style.display="none";
+    }
+  }
+
+  function comprobarCadenaInline(elemento, elementoError, minimo, maximo){
+    var cadena= elemento.value;
+    if(!comprobarCadena(cadena, minimo, maximo)){
+      elementoError.style.display="block";
+    }
+    else {
+      elementoError.style.display="none";
+
+    }
+  }
+
+  function comprobarNumeroInline(elemento, elementoError, minimo, maximo){
+    var numero=elemento.value;
+    if(!comprobarNumero(numero, minimo, maximo)){
+      elementoError.style.display="block";
+    }
+    else {
+      elementoError.style.display="none";
+    }
+  }
+  function comprobarFormatoArchivoInline(elemento,elementoError, formato){
+    var archivo=elemento.value;
+    if(!comprobarFormatoArchivo(archivo, formato)){
+      elementoError.style.display="block";
+    }
+    else {
+      elementoError.style.display="none";
+    }
+  }
+
+  function validarEmailInline(elemento, elementoError, min, max){
+    var email=elemento.value;
+    if(!comprobarCadena(email, min, max)){
+      elementoError.style.display="block";
+    }
+    else{
+      if(!validarEmail(email)){
+        elementoError.style.display="block";
+      }
+      else{
+          elementoError.style.display="none";
+      }
+    }
+  }
+
+  function actualizarCarrito(){
+    var carrito=document.getElementById('compra');
+    var productosSeleccionados= carrito.getElementsByClassName('seleccionado');
+    var tablaCompra=document.getElementById('carrito');
+    var numeroArticulos=document.getElementById('numeroArticulos');
+    var precioUna=5, precioDos=8, precioTres=11, precioGrande=1, precioMasTres=2, precioGrande=1;
+    var numS=0;
+    var numL=0;
+    var importe=0;
+    numProductos=productosSeleccionados.length;
+    numeroArticulos.innerText=numProductos;
+    for(var i=0; i<productosSeleccionados.length;i++){
+      var selectArticulos= productosSeleccionados[i].getElementsByTagName('select');
+      if(selectArticulos[0].value=="s"){
+        numS++;
+      }
+      if(selectArticulos[0].value=="l"){
+        numL++;
+      }
+    }
+    var numeroArticulosS=document.getElementById('tamanoPequeno');
+    numeroArticulosS.innerText=numS;
+    var numeroArticulosL=document.getElementById('tamanoGrande');
+    numeroArticulosL.innerText=numL;
+    switch (numProductos){
+      case 1:
+        importe=precioUna;
+        break;
+      case 2:
+          importe=precioDos;
+          break;
+      case 3:
+          importe=precioTres;
+      default:
+          importe=precioTres+(numProductos-3)*precioMasTres;
+    }
+    if(numL!=0){
+      importe+=numL*precioGrande;
+    }
+    importeCarrito=document.getElementById('importeTotal');
+    importeCarrito.innerText=importe;
+  }
+
+  function validar(){
+    var todoOK=true;
+    mensajeError="";
+    mensajeOK="";
+    var nombre=document.getElementById('nombre');
+    if(!comprobarCadena(nombre.value, 4,100)){
+      todoOK=false;
+      mensajeError+= 'El nombre debe tener entre 4 y 100 caracteres\n';
+    }
+    var direccion=document.getElementById('direccion');
+    if(!comprobarCadena(direccion.value,4,140)){
+      todoOK=false;
+      mensajeError+='La direccion debe tener entre 4 y 140 caracteres\n';
+    }
+    var codigoPostal=document.getElementById('codigoPostal');
+    if(!comprobarNumero(codigoPostal.value, 5,5)){
+      todoOK=false;
+      mensajeError+="El codigo postal debe ser un número de 5 cifras\n";
+    }
+    var email=document.getElementById('email');
+    if(!validarEmail(email.value)){
+      todoOK=false;
+      mensajeError+="El email no es válido\n";
+    }
+    var telefono= document.getElementById('telefono');
+    if(!comprobarTelefono(telefono.value)){
+      todoOK=false;
+      mensajeError+="El telefono debe tener 9 digitos y empezar por 6, 7 ó 9\n";
+    }
+    var captcha=document.getElementById('captcha');
+    if(!comprobarCaptcha(captcha.value,resultadoCaptcha)){
+      todoOK=false;
+      mensajeError+="Captcha no válido\n";
+    }
+    var carnet=document.getElementById('carnet');
+    if(!comprobarFormatoArchivo(carnet.value, 'jpg')){
+      todoOK=false;
+      mensajeError+="El archivo adjunto debe ser un jpeg\n";
+    }
+    if(mensajeError!="")
+      alert(mensajeError);
+    else{
+        contenidoCarrito();
+
+    }
+    return todoOK;
+  }
+
+  function contenidoCarrito(){
+    var mensajeCompra="Se han comprado '+ articulosCarrito.length+ ' articulos'+ \n";
+    compra=document.getElementById('compra');
+    articulosCarrito=compra.getElementsByClassName('seleccionado');
+    for(var i=0; i<articulosCarrito.length;i++){
+      //el primer input tiene el nombre del modelo
+      var modelo=articulosCarrito[i].getElementsByTagName('input');
+      mensajeCompra+="Modelo " + modelo[0].value;
+      //el segundo si está seleccionado será en Color
+      if(modelo[1].checked){
+        mensajeCompra+=" en color ";
+      }
+      if(modelo[2].checked){
+        mensajeCompra+= " en blanco y negro ";
+      }
+      var tamano=articulosCarrito[i].getElementsByTagName('select');
+      if(tamano[0].value=="s"){
+        mensajeCompra+= " con un tamaño de 10x15\n";
+      }
+      if(tamano[0].value=="l"){
+          mensajeCompra+= " con un tamaño de 13x18\n";
+     }
+   }
+   alert(mensajeCompra);
+  }
+  </script>
+</head>
+<body>
+  <header>
+        <h1>Merchandising&#9790;</h1>
+  </header>
+  <main>
+  <section id="compra">
+    <article id="producto1">
+      <img src="images/brujacalderoColor.jpg" alt="imagen1" height="300" onclick="seleccionarProductoImagen(producto1, check1)" title="Click para añadir al carrito">
+      <label>
+      <input id="check1" type="checkbox" name="nombre" value="producto1" onchange="seleccionarProducto(producto1, this)"/> Producto 1</label><br>
+      <label>
+      <input type="radio" name="P1Opcion" checked="checked" onchange="cambiarImagen(producto1, 'color')" value="color"/> Color</label>
+      <label>
+      <input type="radio" name="P1Opcion" onchange="cambiarImagen(producto1, 'gris')" value="blanco y negro"/> Blanco y negro</label><br>
+      <label>Elegir tamaño</label>
+      <select onchange="escribirLog(producto1, this.value)">
+        <option value="s" >10x15</option>
+        <option value="l">13x18</option>
+      </select>
+    </article>
+    <article id="producto2">
+      <img src="images/vampiraColor.jpg" alt="imagen2" height="300" onclick="seleccionarProductoImagen(producto2, check2)" title="Click para añadir al carrito">
+      <label>
+      <input id="check2" type="checkbox" name="nombre" value="producto2" onchange="seleccionarProducto(producto2, this)"/> Producto 2</label><br>
+      <label>
+      <input type="radio" name="P2Opcion" checked="checked" onchange="cambiarImagen(producto2, 'color')" value="color"/> Color</label>
+      <label>
+      <input type="radio" name="P2Opcion" onchange="cambiarImagen(producto2, 'gris')" value="blanco y negro"/> Blanco y negro</label><br>
+      <label>Elegir tamaño</label>
+      <select onchange="escribirLog(producto2, this.value)">
+        <option value="s" >10x15</option>
+        <option value="l">13x18</option>
+      </select>
+    </article>
+    <article id="producto3">
+      <img src="images/Royo1Color.jpg" alt="imagen3" height="300" onclick="seleccionarProductoImagen(producto3, check3)" title="Click para añadir al carrito">
+      <label>
+      <input id="check3" type="checkbox" name="nombre" value="producto3" onchange="seleccionarProducto(producto3, this)"/> Producto 3</label><br>
+      <label>
+      <input type="radio" name="P3Opcion" checked="checked" onchange="cambiarImagen(producto3, 'color')" value="color"/> Color</label>
+      <label>
+      <input type="radio" name="P3Opcion" onchange="cambiarImagen(producto3, 'gris')" value="blanco y negro"/> Blanco y negro</label><br>
+      <label>Elegir tamaño</label>
+      <select onchange="escribirLog(producto3, this.value)">
+        <option value="s" >10x15</option>
+        <option value="l">13x18</option>
+      </select>
+    </article>
+    <article id="producto4">
+      <img src="images/luisRoyo2Color.jpg" alt="imagen4" height="300" onclick="seleccionarProductoImagen(producto4, check4)" title="Click para añadir al carrito">
+      <label>
+      <input id="check4" type="checkbox" name="nombre" value="producto4" onchange="seleccionarProducto(producto4, this)"/> Producto 4</label><br>
+      <label>
+      <input type="radio" name="P4Opcion" checked="checked" onchange="cambiarImagen(producto4, 'color')" value="color"/> Color</label>
+      <label>
+      <input type="radio" name="P4Opcion" onchange="cambiarImagen(producto4, 'gris')" value="blanco y negro"/> Blanco y negro</label><br>
+      <select onchange="escribirLog(producto4, this.value)">
+        <label>Elegir tamaño</label>
+        <option value="s" >10x15</option>
+        <option value="l">13x18</option>
+      </select>
+    </article>
+    <article id="producto5">
+      <img src="images/madreColor.jpg" alt="imagen5" height="300" onclick="seleccionarProductoImagen(producto5, check5)"  title="Click para añadir al carrito">
+      <label>
+      <input id="check5" type="checkbox" name="nombre" value="producto5" onchange="seleccionarProducto(producto5, this)"/> Producto 5</label><br>
+      <label>
+      <input type="radio" name="P5Opcion" checked="checked" onchange="cambiarImagen(producto5, 'color')" value="color"/> Color</label>
+      <label>
+      <input type="radio" name="P5Opcion"onchange="cambiarImagen(producto5, 'gris')" value="blanco y negro"/> Blanco y negro</label><br>
+      <select onchange="escribirLog(producto5, this.value)">
+        <label>Elegir tamaño</label>
+        <option value="s" >10x15</option>
+        <option value="l">13x18</option>
+      </select>
+    </article>
+    <article id="producto6">
+      <img src="images/luisroyo4Color.jpg" alt="imagen6" height="300" onclick="seleccionarProductoImagen(producto6, check6)"  title="Click para añadir al carrito">
+      <label>
+      <input id="check6" type="checkbox" name="nombre" value="producto6" onchange="seleccionarProducto(producto6, this)"/> Producto 6</label><br>
+      <label>
+      <input type="radio" name="P6Opcion" checked="checked" onchange="cambiarImagen(producto6, 'color')" value="color"/> Color</label>
+      <label>
+      <input type="radio" name="P6Opcion"onchange="cambiarImagen(producto6, 'gris')" value="blanco y negro"/> Blanco y negro</label><br>
+      <select onchange="escribirLog(producto6, this.value)">
+        <label>Elegir tamaño</label>
+        <option value="s" >10x15</option>
+        <option value="l">13x18</option>
+      </select>
+    </article>
+  </section>
+  <section class="registro">
+    <article>
+      <fieldset> <legend>Log</legend>
+        <textarea id="log" cols="40" rows="8" disabled ></textarea>
+      </fieldset>
+    <button name="borrarRegistro" onclick="borrarLog(log)" onclick="borrarLog(log)"> Borrar </button>
+    </article>
+    <article>
+      <fieldset> <legend>Precios</legend>
+       <table>
+         <tr>
+           <td>1 imagen </td>
+           <td>5 euros</td>
+         </tr>
+         <tr>
+           <td>2 imágenes</td>
+           <td>8 euros</td>
+         </tr>
+         <tr>
+           <td>3 imágenes</td>
+           <td>11 euros</td>
+         </tr>
+         <tr>
+           <td>+ 3 imágenes</td>
+           <td>2 euros por unidad extra</td>
+         </tr>
+         <tr>
+           <td>13x18 </td>
+           <td>1 € extra</td>
+         </tr>
+       </table>
+          </fieldset>
+     </article>
+  </section>
+  <section>
+    <article>
+    <form id="datosCliente" action="" onsubmit="return validar()">
+      <fieldset><legend>Datos del cliente * &nbsp;</legend>
+      <label>Nombre</label><input id="nombre" type="text" maxlength="100" onchange="comprobarCadenaInline(this, errorNombre, 4, 100)"/><br>
+      <p class="infoError" id="errorNombre">El nombre es obligatorio y debe tener entre 4 y 100 caracteres</p>
+      <label>Direccion</label><input id="direccion" type="text" maxlength="140" onchange="comprobarCadenaInline(this, errorDireccion, 4, 140)"/><br>
+      <p class="infoError" id="errorDireccion">La dirección es obligatoria y debe tener entre 4 y 140 caracteres</p>
+      <label>Código Postal</label><input id="codigoPostal" type="number" onchange="comprobarNumeroInline(this, errorCP, 5, 5)"/><br>
+      <p class="infoError" id="errorCP">El código postal es obligatorio y debe tener 5 dígitos</p>
+      <label>Email</label><input id="email" type="text" maxlength="150" onchange="validarEmailInline(this, errorEmail, 3 , 150)"/><br>
+      <p class="infoError" id="errorEmail">El email es obligatorio y debe tener entre 3 y 150 caracteres</p>
+      <label>Telefono</label><input id="telefono" type="number" onchange="comprobarTelefonoInline(this, errorTelefono)"/><br>
+      <p class="infoError" id="errorTelefono">El teléfono es obligatorio y debe tener 9 dígitos y empezar por 6, 7 ó 9</p>
+      <script type="text/javascript" language="javascript">
+      var num1=0, num2=0;
+      num1=Math.round(Math.random()*10);
+      num2=Math.round(Math.random()*10);
+      resultadoCaptcha=num1+num2;
+       document.write("<label>Captcha</label><input  onchange ='comprobarCapchaInline(this, resultadoCaptcha, errorCaptcha)' id='captcha' type='number' placeholder='"+num1+ " + "+ num2 +"'/><br><p class='infoError' id='errorCaptcha'>Captcha erróneo</p>");
+      </script>
+      <label>Carnet</label>
+      <input id="carnet" type="file" name="archivo" accept="image/jpeg" pattern=".jpg$" onchange="comprobarFormatoArchivoInline(this, errorCarnet, 'jpg')"/>
+      <p class="infoError" id="errorCarnet">El carnet es obligatorio y debe tener formato .jpg</p>
+      <br>
+      <button type="submit" name="summit">Enviar</button>
+      <p> * Datos obligatorios </p>
+      </fieldset>
+    </form>
+  </article>
+  <article>
+      <fieldset> <legend>Carrito</legend>
+     <table id="carrito">
+       <tr>
+         <td>Nº de artículos</td>
+         <td  id="numeroArticulos">0</td>
+       </tr>
+       <tr >
+         <td>10x15</td>
+         <td id="tamanoPequeno">0</td>
+       </tr>
+       <tr >
+         <td>13x18</td>
+         <td id="tamanoGrande">0</td>
+       </tr>
+       <tr >
+         <td>Importe total (€)</td>
+         <td id="importeTotal">0</td>
+       </tr>
+     </table>
+   </article>
+ </main>
+<footer>
+  <p>Jorge Barco Jiménez &copy;. 2ºDAW </p>
+</footer>
+</body>
+</html>
